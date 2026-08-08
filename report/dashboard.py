@@ -51,7 +51,11 @@ class LineChart(MatplotlibViz):
 
         fig, ax = plt.subplots()
 
-        event_data.plot(ax=ax)
+        if event_data.empty:
+            ax.set_title("No event data available")
+            ax.axis("off")
+        else:
+            event_data.plot(ax=ax)
 
         self.set_axis_styling(
             ax,
@@ -202,6 +206,13 @@ async def update_data(r):
 
     profile_type = data._dict["profile_type"]
     entity_id = data._dict["user-selection"]
+
+    print(
+        "PROFILE:",
+        profile_type,
+        "ENTITY:",
+        entity_id,
+    )
 
     if profile_type == "Employee":
         return RedirectResponse(
